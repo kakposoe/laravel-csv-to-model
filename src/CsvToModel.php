@@ -2,6 +2,7 @@
 
 namespace Kakposoe\CsvToModel;
 
+use Illuminate\Support\Str;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 
 class CsvToModel
@@ -36,21 +37,18 @@ class CsvToModel
     public function headers(array $headers)
     {
         $this->headers = $headers;
-
         return $this;
     }
 
     public function format($field, $closure)
     {
         $this->format[$field] = $closure;
-
         return $this;
     }
 
     public function only()
     {
         $this->only = collect(func_get_args());
-
         return $this;
     }
 
@@ -116,20 +114,19 @@ class CsvToModel
     protected function setHeaders($row)
     {
         $this->fields = $this->getValues($row)->map(function ($value, $key) {
-            return trim(str_replace(' ', '_', strtolower($value)));
+            return Str::snake($value);
         })->all();
 
         if (! empty($this->headers)) {
             collect($this->headers)->each(function ($value, $key) {
-                $key   = trim(str_replace(' ', '_', strtolower($key)));
-                $index = collect($this->fields)->search($key);
+                $index = collect($this->fields)->search(Str::snake($key));
                 $this->fields[$index] = $value;
             });
         }
 
         if (! empty($this->only)) {
             $this->fields = collect($this->fields)->reject(function ($value, $key) {
-                if (! $index = $this->only->contains($value)) {
+                if (! $this->only->contains($value)) {
                     $this->remove[] = $key;
                     return true;
                 }
@@ -147,11 +144,9 @@ class CsvToModel
     protected function formatData($data)
     {
         return $data->map(function ($value, $key) {
-            if (isset($this->format[$this->fields[$key]])) {
-                $value = $this->format[$this->fields[$key]]($value);
-            }
-
-            return $value;
+            return isset($this->format[$this->fields[$key]])
+                ? $this->format[$this->fields[$key]]($value)
+                : $value;
         });
     }
 }
