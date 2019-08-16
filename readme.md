@@ -9,7 +9,7 @@
 Via Composer
 
 ``` bash
-$ composer require kakposoe/csvtomodel
+$ composer require kakposoe/laravel-csv-to-model
 ```
 
 ## Usage
@@ -53,7 +53,7 @@ $csv->format('first_name', function($value) {
 })
 ```
 
-The first argument is the target field (if field name is changed used `->header()`, use the **mapped name**). The second argument should be a closure, returning the formatted data.
+The first argument is the target field (if field name is changed used `->headers()`, use the **mapped name**). The second argument should be a closure, returning the formatted data.
 
 ## Credits
 
