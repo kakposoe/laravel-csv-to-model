@@ -51,4 +51,18 @@ class CsvToModelTest extends TestCase
         
         $this->assertCount(1, TestModel::all());
     }
+
+    /** @test */
+    public function can_format_fields()
+    {
+        $file = __DIR__ . '/Support/testfiles/test_import.csv';
+
+        TestModel::csv($file)
+            ->format('first_name', function($value) {
+                return strtoupper($value);
+            })
+            ->import();
+
+        $this->assertSame('JOE', TestModel::first()->first_name);
+    }
 }

@@ -24,6 +24,9 @@ class CsvToModel
     /** @var */
     protected $remove = [];
 
+    /** @var */
+    protected $format = [];
+
     public function __construct($path, $class)
     {
         $this->path  = $path;
@@ -33,6 +36,13 @@ class CsvToModel
     public function headers(array $headers)
     {
         $this->headers = $headers;
+
+        return $this;
+    }
+
+    public function format($field, $closure)
+    {
+        $this->format[$field] = $closure;
 
         return $this;
     }
@@ -63,8 +73,12 @@ class CsvToModel
 
                 if (! empty($this->only)) {
                     $data = $data->reject(function ($value, $key) {
-                        return in_array($key ,$this->remove);
+                        return in_array($key, $this->remove);
                     })->values();
+                }
+
+                if (! empty($this->format)) {
+                    $data = $this->formatData($data);
                 }
 
                 $data = $data->flatMap(function ($value, $key) {
@@ -78,6 +92,13 @@ class CsvToModel
         $reader->close();
     }
 
+    /**
+     * Get values of that row
+     *
+     * @param   \Box\Spout\Common\Entity\Row    $row
+     *
+     * @return  \Illuminate\Support\Collection
+     */
     protected function getValues($row)
     {
         return collect($row->getCells())->map(function ($field, $key) {
@@ -85,6 +106,13 @@ class CsvToModel
         });
     }
 
+    /**
+     * Set database fields using headers
+     *
+     * @param   \Box\Spout\Common\Entity\Row    $row
+     *
+     * @return  void
+     */
     protected function setHeaders($row)
     {
         $this->fields = $this->getValues($row)->map(function ($value, $key) {
@@ -107,5 +135,23 @@ class CsvToModel
                 }
             })->values()->all();
         }
+    }
+
+    /**
+     * Get values of that row
+     *
+     * @param   \Illuminate\Support\Collection    $data
+     *
+     * @return  \Illuminate\Support\Collection
+     */
+    protected function formatData($data)
+    {
+        return $data->map(function ($value, $key) {
+            if (isset($this->format[$this->fields[$key]])) {
+                $value = $this->format[$this->fields[$key]]($value);
+            }
+
+            return $value;
+        });
     }
 }
