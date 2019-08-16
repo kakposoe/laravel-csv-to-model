@@ -11,9 +11,9 @@ class CsvToModelTest extends TestCase
     /** @test */
     public function can_import_data_from_csv_to_model()
     {
-        $file = __DIR__ . '/Support/testfiles/test_import.csv';
+        $path = __DIR__ . '/Support/testfiles/test_import.csv';
 
-        TestModel::csv($file)->import();
+        TestModel::csv($path)->import();
 
         $this->assertCount(1, TestModel::all());
     }
@@ -21,9 +21,9 @@ class CsvToModelTest extends TestCase
     /** @test */
     public function can_change_headers_automatically()
     {
-        $file = __DIR__ . '/Support/testfiles/test_string_headers_import.csv';
+        $path = __DIR__ . '/Support/testfiles/test_string_headers_import.csv';
 
-        TestModel::csv($file)->import();
+        TestModel::csv($path)->import();
         
         $this->assertCount(1, TestModel::all());
     }
@@ -31,9 +31,9 @@ class CsvToModelTest extends TestCase
     /** @test */
     public function can_replace_headers()
     {
-        $file = __DIR__ . '/Support/testfiles/test_change_headers_import.csv';
+        $path = __DIR__ . '/Support/testfiles/test_change_headers_import.csv';
 
-        TestModel::csv($file)
+        TestModel::csv($path)
             ->headers(['Email Address' => 'email'])
             ->import();
         
@@ -43,9 +43,9 @@ class CsvToModelTest extends TestCase
     /** @test */
     public function can_only_process_specified_fields()
     {
-        $file = __DIR__ . '/Support/testfiles/test_extra_columns_import.csv';
+        $path = __DIR__ . '/Support/testfiles/test_extra_columns_import.csv';
 
-        TestModel::csv($file)
+        TestModel::csv($path)
             ->only('first_name', 'last_name', 'email', 'contact_number')
             ->import();
         
@@ -55,9 +55,9 @@ class CsvToModelTest extends TestCase
     /** @test */
     public function can_format_fields()
     {
-        $file = __DIR__ . '/Support/testfiles/test_import.csv';
+        $path = __DIR__ . '/Support/testfiles/test_import.csv';
 
-        TestModel::csv($file)
+        TestModel::csv($path)
             ->format('first_name', function($value) {
                 return strtoupper($value);
             })

@@ -1,11 +1,8 @@
-# CsvToModel
+# Laravel Csv To Model
+ Helper for Laravel Eloquent to import csv data directly into a model.
 
-[![Latest Version on Packagist][ico-version]][link-packagist]
-[![Total Downloads][ico-downloads]][link-downloads]
 [![Build Status][ico-travis]][link-travis]
 [![StyleCI][ico-styleci]][link-styleci]
-
-This is where your description should go. Take a look at [contributing.md](contributing.md) to see a to do list.
 
 ## Installation
 
@@ -16,24 +13,37 @@ $ composer require kakposoe/csvtomodel
 ```
 
 ## Usage
+The package offers an expressive api to prepare and process an entire csv import into the database via an eloquent command.
 
-## Change log
-
-Please see the [changelog](changelog.md) for more information on what has changed recently.
-
-## Testing
-
-``` bash
-$ composer test
+``` php
+$csv = Model::csv($path)
+$csv->import();
 ```
 
-## Contributing
+Behind the scenes, the package wraps box/spout functionality to import the csv.
 
-Please see [contributing.md](contributing.md) for details and a todolist.
+The first argument expects the file path for the csv file. After this, running `->import()` will import all rows into the database.
 
-## Security
 
-If you discover any security related issues, please email author email instead of using the issue tracker.
+### Changing field names
+By default, the first row of the csv file will be used to determine the model fields to fill. The field names will be automatically changed to `snake_case`.
+
+If you need to change the field name, you can use the `->headers()` method and pass an array to map the field names:
+
+``` php
+$csv->headers(['Email Address' => 'email'])
+```
+
+**Note:** If the field name is not in the array passed into the `->headers()` method, it will default to the original, `snake_case` version of the field.
+
+### Specifying fields to import
+You can use the `->only()` method to specify what fields should be imported:
+
+``` php
+$csv->only('first_name', 'last_name', 'email', 'contact_number')
+```
+
+**Note:** If using in conjuction with `->headers()`, this would be the **mapped name**, not the original name.
 
 ## Credits
 
