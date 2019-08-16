@@ -1,0 +1,44 @@
+{
+    "name": "kakposoe/laravel-csv-to-model",
+    "description": "Eloquent helper to import csv data directly into a model",
+    "license": "license",
+    "authors": [
+        {
+            "name": "Kelvin Akposoe",
+            "email": "kakposoe@gmail.com"
+        }
+    ],
+    "homepage": "https://github.com/kakposoe/laravel-csv-to-model",
+    "keywords": ["Laravel", "CsvToModel"],
+    "require": {
+        "illuminate/support": "~5",
+        "box/spout": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~7.0",
+        "mockery/mockery": "^1.1",
+        "orchestra/testbench": "~3.0",
+        "sempro/phpunit-pretty-print": "^1.0",
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kakposoe\\CsvToModel\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kakposoe\\CsvToModel\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kakposoe\\CsvToModel\\CsvToModelServiceProvider"
+            ],
+            "aliases": {
+                "CsvToModel": "Kakposoe\\CsvToModel\\Facades\\CsvToModel"
+            }
+        }
+    }
+}
