@@ -56,5 +56,7 @@ $csv->format('first_name', function($value) {
 The first argument is the target field (if field name is changed used `->headers()`, use the **mapped name**). The second argument should be a closure, returning the formatted data.
 
 ## Credits
-- [author name][link-author]
-- [All Contributors][link-contributors]
+
+- [Kelvin Akposoe][link-author]
+
+[link-author]: https://github.com/kakposoe
