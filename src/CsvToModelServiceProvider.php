@@ -48,7 +48,7 @@ class CsvToModelServiceProvider extends ServiceProvider
     {
         return ['csvtomodel'];
     }
-    
+
     /**
      * Console-specific booting.
      *

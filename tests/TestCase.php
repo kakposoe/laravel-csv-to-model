@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Kakposoe\CsvToModel\Tests;
 
@@ -6,7 +6,6 @@ use Illuminate\Database\Schema\Blueprint;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
-
     /**
      * Setup the test environment.
      */

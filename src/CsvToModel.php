@@ -30,25 +30,28 @@ class CsvToModel
 
     public function __construct($path, $class)
     {
-        $this->path  = $path;
+        $this->path = $path;
         $this->class = $class;
     }
 
     public function headers(array $headers)
     {
         $this->headers = $headers;
+
         return $this;
     }
 
     public function format($field, $closure)
     {
         $this->format[$field] = $closure;
+
         return $this;
     }
 
     public function only()
     {
         $this->only = collect(func_get_args());
+
         return $this;
     }
 
@@ -64,6 +67,7 @@ class CsvToModel
             collect($sheet->getRowIterator())->each(function ($row, $key) {
                 if ($key == 1) {
                     $this->setHeaders($row);
+
                     return;
                 }
 
@@ -91,7 +95,7 @@ class CsvToModel
     }
 
     /**
-     * Get values of that row
+     * Get values of that row.
      *
      * @param   \Box\Spout\Common\Entity\Row    $row
      *
@@ -105,7 +109,7 @@ class CsvToModel
     }
 
     /**
-     * Set database fields using headers
+     * Set database fields using headers.
      *
      * @param   \Box\Spout\Common\Entity\Row    $row
      *
@@ -128,6 +132,7 @@ class CsvToModel
             $this->fields = collect($this->fields)->reject(function ($value, $key) {
                 if (! $this->only->contains($value)) {
                     $this->remove[] = $key;
+
                     return true;
                 }
             })->values()->all();
@@ -135,7 +140,7 @@ class CsvToModel
     }
 
     /**
-     * Get values of that row
+     * Get values of that row.
      *
      * @param   \Illuminate\Support\Collection    $data
      *
