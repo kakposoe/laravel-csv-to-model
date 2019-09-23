@@ -1,8 +1,8 @@
 # Laravel Csv To Model
  Helper for Laravel Eloquent to import csv data directly into a model.
 
-[![Build Status][ico-travis]][link-travis]
-[![StyleCI][ico-styleci]][link-styleci]
+[![Build Status](https://travis-ci.org/kakposoe/laravel-csv-to-model.svg?branch=master)](https://travis-ci.org/kakposoe/laravel-csv-to-model)
+[![StyleCI](https://styleci.io/repos/202747399/shield?branch=master)](https://styleci.io/repos/202747399)
 
 ## Installation
 
@@ -56,22 +56,5 @@ $csv->format('first_name', function($value) {
 The first argument is the target field (if field name is changed used `->headers()`, use the **mapped name**). The second argument should be a closure, returning the formatted data.
 
 ## Credits
-
 - [author name][link-author]
 - [All Contributors][link-contributors]
-
-## License
-
-license. Please see the [license file](license.md) for more information.
-
-[ico-version]: https://img.shields.io/packagist/v/kakposoe/csvtomodel.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/kakposoe/csvtomodel.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/kakposoe/csvtomodel/master.svg?style=flat-square
-[ico-styleci]: https://styleci.io/repos/12345678/shield
-
-[link-packagist]: https://packagist.org/packages/kakposoe/csvtomodel
-[link-downloads]: https://packagist.org/packages/kakposoe/csvtomodel
-[link-travis]: https://travis-ci.org/kakposoe/csvtomodel
-[link-styleci]: https://styleci.io/repos/12345678
-[link-author]: https://github.com/kakposoe
-[link-contributors]: ../../contributors
