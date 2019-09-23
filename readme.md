@@ -1,8 +1,10 @@
 # Laravel Csv To Model
- Helper for Laravel Eloquent to import csv data directly into a model.
+Helper for Laravel Eloquent to import csv data directly into a model.
 
 [![Build Status](https://travis-ci.org/kakposoe/laravel-csv-to-model.svg?branch=master)](https://travis-ci.org/kakposoe/laravel-csv-to-model)
 [![StyleCI](https://styleci.io/repos/202747399/shield?branch=master)](https://styleci.io/repos/202747399)
+
+Behind the scenes, the package wraps the [box/spout](https://github.com/box/spout) package to iterate the imported csv.
 
 ## Installation
 
@@ -13,14 +15,31 @@ $ composer require kakposoe/laravel-csv-to-model
 ```
 
 ## Usage
+
+You must use the `CsvToModel` trait in the model you would like to import csv data:
+
+```php
+
+<?php
+
+namespace App;
+
+use Kakposoe\CsvToModel\Traits\CsvToModel;
+
+class YourModel extends Model
+{
+    use CsvToModel;
+
+    ...
+}
+```
+
 The package offers an expressive api to prepare and process an entire csv import into the database via an eloquent command.
 
 ``` php
 $csv = Model::csv($path)
 $csv->import();
 ```
-
-Behind the scenes, the package wraps the [box/spout](https://github.com/box/spout) package to iterate the imported csv.
 
 The first argument expects the file path for the csv file. After this, running `->import()` will import all rows into the database.
 
