@@ -9,7 +9,7 @@ class TestModel extends Model
 {
     use CsvToModel;
 
-    protected $table   = 'test_models';
+    protected $table = 'test_models';
     protected $guarded = [];
     public $timestamps = false;
 }
