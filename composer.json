@@ -1,7 +1,7 @@
 {
     "name": "kakposoe/laravel-csv-to-model",
     "description": "Eloquent helper to import csv data directly into a model",
-    "license": "license",
+    "license": "MIT",
     "authors": [
         {
             "name": "Kelvin Akposoe",
