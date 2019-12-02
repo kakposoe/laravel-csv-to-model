@@ -2,8 +2,8 @@
 
 namespace Kakposoe\CsvToModel;
 
-use Illuminate\Support\Str;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use Illuminate\Support\Str;
 
 class CsvToModel
 {
