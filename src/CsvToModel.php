@@ -23,6 +23,15 @@ class CsvToModel
     protected $only = [];
 
     /** @var */
+    protected $concat = [];
+
+    /** @var */
+    protected $additions = [];
+
+    /** @var */
+    protected $ignoreDuplicates = [];
+
+    /** @var */
     protected $remove = [];
 
     /** @var */
@@ -37,6 +46,27 @@ class CsvToModel
     public function headers(array $headers)
     {
         $this->headers = $headers;
+
+        return $this;
+    }
+
+    public function concat(array $concat)
+    {
+        $this->concat = $concat;
+
+        return $this;
+    }
+
+    public function additions(array $additions)
+    {
+        $this->additions = $additions;
+
+        return $this;
+    }
+
+    public function ignoreDuplicates()
+    {
+        $this->ignoreDuplicates = collect(func_get_args());
 
         return $this;
     }
@@ -59,7 +89,9 @@ class CsvToModel
     {
         $reader = ReaderEntityFactory::createReaderFromFile($this->path);
 
-        $reader->setFieldDelimiter(',');
+        if (pathinfo($this->path)['extension'] == 'csx') {
+            $reader->setFieldDelimiter(',');
+        }
 
         $reader->open($this->path);
 
@@ -67,7 +99,6 @@ class CsvToModel
             collect($sheet->getRowIterator())->each(function ($row, $key) {
                 if ($key == 1) {
                     $this->setHeaders($row);
-
                     return;
                 }
 
@@ -86,6 +117,37 @@ class CsvToModel
                 $data = $data->flatMap(function ($value, $key) {
                     return [$this->fields[$key] => $value];
                 })->all();
+
+                if (! empty($this->concat)) {
+                    foreach ($this->concat as $field => $fields) {
+                        $new = [];
+
+                        foreach ($fields as $key => $value) {
+                            $new[$key] = $data[$value];
+                            unset($data[$value]);
+                        }
+
+                        $data[$field] = implode(' ', $new);
+                    }
+                }
+
+                if (! empty($this->additions)) {
+                    foreach ($this->additions as $key => $value) {
+                        $data[$key] = $value;
+                    }
+                }
+
+                $query = new $this->class;
+
+                if (! empty($this->ignoreDuplicates)) {
+                    foreach ($this->ignoreDuplicates as $field) {
+                        $query = $query->where($field, $data[$field]);
+                    }
+
+                    if ($query->exists()) {
+                        return;
+                    }
+                }
 
                 $this->class::create($data);
             });
@@ -132,7 +194,6 @@ class CsvToModel
             $this->fields = collect($this->fields)->reject(function ($value, $key) {
                 if (! $this->only->contains($value)) {
                     $this->remove[] = $key;
-
                     return true;
                 }
             })->values()->all();
