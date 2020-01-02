@@ -99,6 +99,7 @@ class CsvToModel
             collect($sheet->getRowIterator())->each(function ($row, $key) {
                 if ($key == 1) {
                     $this->setHeaders($row);
+
                     return;
                 }
 
@@ -194,6 +195,7 @@ class CsvToModel
             $this->fields = collect($this->fields)->reject(function ($value, $key) {
                 if (! $this->only->contains($value)) {
                     $this->remove[] = $key;
+
                     return true;
                 }
             })->values()->all();
